@@ -28,6 +28,23 @@ securityDefinitions:
 
 paths: 
   /profile:
+    get:
+      summary: 
+        Get information about your profile
+      tags:
+      - Profile
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Successful
+          schema:
+            $ref: "#/definitions/User"
+        '401':
+          description:  Unauthorized
+          schema:
+            type: string
+            example: Invalid access key
     post:
       summary: 
         Register a new account
@@ -139,6 +156,21 @@ paths:
           description: Incorrect email
         
   /profile/privacy_options:
+    get:
+      summary:
+        Get your privacy settings
+      tags:
+      - Profile
+      responses:
+        '200':
+          description: Successful
+          schema:
+            $ref: "#/definitions/Privacy_options"
+        '401':
+          description:  Unauthorized
+          schema:
+            type: string
+            example: Invalid access key
     patch:
       summary: 
         Edit profile privacy options
@@ -1989,6 +2021,25 @@ definitions:
       last_time:
         type: string
         format: date-time
+        
+  Privacy_options:
+    type: object
+    properties:
+      can_found:
+        type: integer
+        description: "Можно ли найти профиль при поиске по имени\n0 - не может быть найден\n 1 - может быть найден"
+      last_visit:
+        type: integer
+        description: "Кто может видеть время последнего посещения\n0 - никто\n1 - только друзья\n2 - все"
+      audio_call:
+        type: integer
+        description: "Кто может совершать аудиозвонок\n0 - никто\n1 - только друзья\n2 - все"
+      video_call:
+        type: integer
+        description: "Кто может совершать видеозвонок\n0 - никто\n1 - только друзья\n2 - все"
+      forwarding:
+        type: integer
+        description: "Кто может пересылать ваши сообщения из личных чатов\n0 - никто\n1 - только друзья\n2 - все"
         
   User_list:
     type: object
