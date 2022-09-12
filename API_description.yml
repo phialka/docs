@@ -51,25 +51,23 @@ paths:
       tags:
       - Profile
       parameters:
-      - name: username
-        in: query
-        type: string
+      - name: profile_info
+        in: body
         required: true
-        description: Short unique username
-      - name: name
-        in: query
-        type: string
-        required: true
-        description: Name
-      - name: description
-        in: query
-        type: string
-        required: false
-        description: Profile description (no more than 100 characters)
-      - name: email
-        in: query
-        type: string
-        description: Email address (required to confirm registration)
+        schema:
+          properties:
+            username:
+              type: string
+              example: vasya
+            name:
+              type: string
+              example: Вася
+            description:
+              type: string
+              example: Junior programmer
+            email:
+              type: string
+              example: vasyajun@domen.net
       produces:
       - application/json
       responses:
@@ -86,24 +84,23 @@ paths:
       tags:
       - Profile
       parameters:
-      - name: username
-        in: query
-        type: string
-        description: Short unique username
-      - name: name
-        in: query
-        type: string
-        required: false
-        description: User name (no more than 4 words, no more than 30 characters)
-      - name: description
-        in: query
-        type: string
-        required: false
-        description: Profile description (no more than 100 characters)
-      - name: email
-        in: query
-        type: string
-        description: Email address (required to confirm registration)
+      - name: profile_info
+        in: body
+        required: true
+        schema:
+          properties:
+            username:
+              type: string
+              example: vasya
+            name:
+              type: string
+              example: Вася
+            description:
+              type: string
+              example: Junior programmer
+            email:
+              type: string
+              example: vasyajun@domen.net
       produces:
       - application/json
       responses:
@@ -177,31 +174,11 @@ paths:
       tags:
       - Profile
       parameters:
-      - name: can_found
-        in: query
-        type: integer
-        required: false
-        description: "Можно ли найти профиль при поиске по имени\n0 - не может быть найден\n 1 - может быть найден"
-      - name: last_visit
-        in: query
-        type: integer
-        required: false
-        description: "Кто может видеть время последнего посещения\n0 - никто\n1 - только друзья\n2 - все"
-      - name: audio_call
-        in: query
-        type: integer
-        required: false
-        description: "Кто может совершать аудиозвонок\n0 - никто\n1 - только друзья\n2 - все"
-      - name: video_call
-        in: query
-        type: integer
-        required: false
-        description: "Кто может совершать видеозвонок\n0 - никто\n1 - только друзья\n2 - все"
-      - name: forwarding
-        in: query
-        type: integer
-        required: false
-        description: "Кто может пересылать ваши сообщения из личных чатов\n0 - никто\n1 - только друзья\n2 - все"
+      - name: privacy_options
+        in: body
+        schema:
+          $ref: "#/definitions/Privacy_options"
+        required: true
       produces:
       - application/json
       responses:
