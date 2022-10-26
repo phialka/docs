@@ -1066,6 +1066,56 @@ paths:
           schema:
             type: string
   
+  /chats/{chat_id}/messages:
+    get:
+        summary: 
+            Get messages from chat
+        tags:
+        - Chats
+        parameters:
+        - in: path
+          name: chat_id
+          type: integer
+          required: true
+          description: Chat ID
+        - in: query
+          name: message_id
+          type: string
+          description: Id of the newest message available to the client (to receive all posts newer than this one)
+        - in: query
+          name: newer_than
+          type: string
+          format: date-time
+          description: Specify the exact time to receive message sent later
+        - in: query
+          name: count
+          type: integer
+          description: Count of messages
+        responses:
+          '200':
+            description: Successfully
+            schema:
+              type: array
+              items: 
+                $ref: "#/definitions/Message"
+          '400':
+            description: Unsuccessful
+            schema:
+              type: string
+          '401':
+            description: Unauthorized
+            schema:
+              type: string
+          '403':
+            description: Forbitten
+            schema:
+              type: string
+          '404':
+            description: Not found
+            schema:
+              type: string
+            
+  
   /chats/{chat_id}/messages/pin:
     post:
       summary: Anchors the message
@@ -1437,6 +1487,42 @@ paths:
             $ref: "#/definitions/Channel"
         '400':
           description: Unsuccessful
+          schema:
+            type: string
+    
+  /channels/messages:
+    get:
+      summary: Returns new posts from channels
+      tags:
+      - Cannels
+      parameters:
+      - in: query
+        name: count
+        type: integer
+        default: 30
+        maximum: 100
+        description: The number of objects to get
+      responses:
+        '200':
+          description: Successfully, returns list of posts objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Post"
+        '400':
+            description: Unsuccessful
+            schema:
+              type: string
+        '401':
+          description: Unauthorized
+          schema:
+            type: string
+        '403':
+          description: Forbitten
+          schema:
+            type: string
+        '404':
+          description: Not found
           schema:
             type: string
     
