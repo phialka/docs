@@ -28,31 +28,46 @@ securityDefinitions:
 
 paths: 
   /profile:
+    get:
+      summary: 
+        Get information about your profile
+      tags:
+      - Profile
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Successful
+          schema:
+            $ref: "#/definitions/User"
+        '401':
+          description:  Unauthorized
+          schema:
+            type: string
+            example: Invalid access key
     post:
       summary: 
         Register a new account
       tags:
       - Profile
       parameters:
-      - name: username
-        in: query
-        type: string
+      - name: profile_info
+        in: body
         required: true
-        description: Short unique username
-      - name: name
-        in: query
-        type: string
-        required: true
-        description: Name
-      - name: description
-        in: query
-        type: string
-        required: false
-        description: Profile description (no more than 100 characters)
-      - name: email
-        in: query
-        type: string
-        description: Email address (required to confirm registration)
+        schema:
+          properties:
+            username:
+              type: string
+              example: vasya
+            name:
+              type: string
+              example: Вася
+            description:
+              type: string
+              example: Junior programmer
+            email:
+              type: string
+              example: vasyajun@domen.net
       produces:
       - application/json
       responses:
@@ -69,24 +84,23 @@ paths:
       tags:
       - Profile
       parameters:
-      - name: username
-        in: query
-        type: string
-        description: Short unique username
-      - name: name
-        in: query
-        type: string
-        required: false
-        description: User name (no more than 4 words, no more than 30 characters)
-      - name: description
-        in: query
-        type: string
-        required: false
-        description: Profile description (no more than 100 characters)
-      - name: email
-        in: query
-        type: string
-        description: Email address (required to confirm registration)
+      - name: profile_info
+        in: body
+        required: true
+        schema:
+          properties:
+            username:
+              type: string
+              example: vasya
+            name:
+              type: string
+              example: Вася
+            description:
+              type: string
+              example: Junior programmer
+            email:
+              type: string
+              example: vasyajun@domen.net
       produces:
       - application/json
       responses:
@@ -139,37 +153,32 @@ paths:
           description: Incorrect email
         
   /profile/privacy_options:
+    get:
+      summary:
+        Get your privacy settings
+      tags:
+      - Profile
+      responses:
+        '200':
+          description: Successful
+          schema:
+            $ref: "#/definitions/Privacy_options"
+        '401':
+          description:  Unauthorized
+          schema:
+            type: string
+            example: Invalid access key
     patch:
       summary: 
         Edit profile privacy options
       tags:
       - Profile
       parameters:
-      - name: can_found
-        in: query
-        type: integer
-        required: false
-        description: "Можно ли найти профиль при поиске по имени\n0 - не может быть найден\n 1 - может быть найден"
-      - name: last_visit
-        in: query
-        type: integer
-        required: false
-        description: "Кто может видеть время последнего посещения\n0 - никто\n1 - только друзья\n2 - все"
-      - name: audio_call
-        in: query
-        type: integer
-        required: false
-        description: "Кто может совершать аудиозвонок\n0 - никто\n1 - только друзья\n2 - все"
-      - name: video_call
-        in: query
-        type: integer
-        required: false
-        description: "Кто может совершать видеозвонок\n0 - никто\n1 - только друзья\n2 - все"
-      - name: forwarding
-        in: query
-        type: integer
-        required: false
-        description: "Кто может пересылать ваши сообщения из личных чатов\n0 - никто\n1 - только друзья\n2 - все"
+      - name: privacy_options
+        in: body
+        schema:
+          $ref: "#/definitions/Privacy_options"
+        required: true
       produces:
       - application/json
       responses:
@@ -1989,6 +1998,25 @@ definitions:
       last_time:
         type: string
         format: date-time
+        
+  Privacy_options:
+    type: object
+    properties:
+      can_found:
+        type: integer
+        description: "Можно ли найти профиль при поиске по имени\n0 - не может быть найден\n 1 - может быть найден"
+      last_visit:
+        type: integer
+        description: "Кто может видеть время последнего посещения\n0 - никто\n1 - только друзья\n2 - все"
+      audio_call:
+        type: integer
+        description: "Кто может совершать аудиозвонок\n0 - никто\n1 - только друзья\n2 - все"
+      video_call:
+        type: integer
+        description: "Кто может совершать видеозвонок\n0 - никто\n1 - только друзья\n2 - все"
+      forwarding:
+        type: integer
+        description: "Кто может пересылать ваши сообщения из личных чатов\n0 - никто\n1 - только друзья\n2 - все"
         
   User_list:
     type: object
